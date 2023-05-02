@@ -1,5 +1,5 @@
 const sideBar = document.querySelector("#sideBar");
-fetch("src/views/sideBar/sideBar.html")
+fetch("./views/sideBar/sideBar.html")
   .then((res) => res.text())
   .then((data) => {
     sideBar.innerHTML = data;

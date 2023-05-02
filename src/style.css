@@ -1,6 +1,34 @@
 body {
   background-color: #fcfcfc;
 }
+#dragNdrop {
+  height: 250px;
+  background-color: #f8f8f8;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.active {
+  border: 0.2em dashed #025bee;
+}
+input[type="file"] {
+  display: none;
+}
+label {
+  display: block;
+  position: relative;
+  background-color: #025bee;
+  color: #ffffff;
+  font-size: 1.1em;
+  text-align: center;
+  width: 16em;
+  border-radius: 0.3em;
+  margin: 0 auto 1em auto;
+  cursor: pointer;
+}
+#sideBarData{
+  height: 700px;
+  overflow: auto;
+}
 .animated-icon2 {
   width: 30px;
   height: 20px;

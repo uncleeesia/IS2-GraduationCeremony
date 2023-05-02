@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
+    ></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./views/common/logo/logo.js" defer></script>
+    <script src="./views/sideBar/sideBar.js" defer></script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
+    ></script>
+    <script defer src="./views/dragNdrop/upload.js"></script>
+    <script defer src="./views/dragNdrop/read.js"></script>
+  </head>
+  <body class="container-fluid d-flex justify-content-center align-items-start">
+    <section class="d-flex row justify-content-center col-10">
+      <div class="logo mt-5 align-items-start"></div>
+      <div
+        id="dragNdrop"
+        class="mt-5 d-flex justify-content-center align-items-center w-25"
+      >
+        <input type="file" id="file-input" />
+        <label class="p-4 d-flex align-items-center" for="file-input">
+          <i class="fa-solid fa-upload"></i>
+          <img src="./asset/images/dragNdrop.png" />&nbsp; Choose Or Drop Files
+        </label>
+      </div>
+    </section>
+    <section class="d-flex row col-2">
+      <div class="mt-5 d-flex justify-content-end" id="sideBar"></div>
+      <div class="collapse" id="navbarToggleExternalContent10">
+        <div class="d-flex justify-content-center">
+          <img class="p-2 mr-2" src="./asset/images/search.png"/>
+          <input
+            class="justify-content-center"
+            id="searchBar"
+            type="search"
+            placeholder="Search..."
+          />
+        </div>
+        <div class="bg-light shadow-3 p-3" id="sideBarData">
+          <template>
+            <button class="btn btn-link btn-block border-bottom m-1"></button>
+          </template>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
