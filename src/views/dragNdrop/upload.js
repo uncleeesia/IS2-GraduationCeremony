@@ -10,35 +10,7 @@ function downloadFile(filename, content) {
   link.click();
   document.body.removeChild(link);
 }
-dragNdrop.addEventListener(
-  "drop",
-  (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dragNdrop.classList.remove("active");
-    let draggedData = e.dataTransfer;
-    let file = draggedData.files[0];
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      var data = new Uint8Array(e.target.result);
-      var workbook = XLSX.read(data, { type: "array" });
-      var sheetNameList = workbook.SheetNames;
-
-      sheetNameList.forEach(function (y) {
-        var worksheet = workbook.Sheets[y];
-        var json = XLSX.utils.sheet_to_json(worksheet);
-        downloadFile(y + ".json", JSON.stringify(json));
-      });
-    };
-
-    reader.readAsArrayBuffer(file);
-  },
-  false
-);
-
-fileInput.addEventListener("change", function (e) {
-  var file = e.target.files[0];
+function convertFile(file) {
   var reader = new FileReader();
 
   reader.onload = function (e) {
@@ -54,7 +26,25 @@ fileInput.addEventListener("change", function (e) {
   };
 
   reader.readAsArrayBuffer(file);
+}
+
+fileInput.addEventListener("change", function (e) {
+  var file = e.target.files[0];
+  convertFile(file);
 });
+
+dragNdrop.addEventListener(
+  "drop",
+  (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dragNdrop.classList.remove("active");
+    let draggedData = e.dataTransfer;
+    let file = draggedData.files[0];
+    convertFile(file);
+  },
+  false
+);
 
 dragNdrop.addEventListener(
   "dragenter",

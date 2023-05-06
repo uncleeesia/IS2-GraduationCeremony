@@ -25,31 +25,42 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="./style.css" />
-    <script defer src="./views/dragNdrop/read.js"></script>
-    <script src="./views/logo/logo.js" defer></script>
-    <script src="./views/sideBar/sideBar.js" defer></script>
+
+    <script src="./views/common/logo/logo.js" defer></script>
+    <script src="./views/common/sideBar/sideBar.js" defer></script>
     <script src="./views/record/record.js" defer></script>
+    <script src="./views/dragNdrop/read.js" defer></script>
   </head>
   <body class="container-fluid d-flex justify-content-center align-items-start">
     <section class="d-flex row justify-content-center col-10">
-      <div class="logo mt-5 mb-5 align-items-start"></div>
+      <div class="logo"></div>
       <div class="row mt-5 mb-5 p-5">
         <audio id="audio"></audio>
-        <audio id="audioPlay" controls aria-disabled="true"></audio>
+        <audio id="audioPlay" controls></audio>
       </div>
       <div class="d-flex col justify-content-evenly mt-5">
         <button id="btnStart">Start</button>
-        <button id="btnStop">Stop</button>
+        <button id="btnStop" disabled>Stop</button>
       </div>
     </section>
     <section class="d-flex row col-2">
       <div class="mt-5 d-flex justify-content-end" id="sideBar"></div>
       <div class="collapse" id="navbarToggleExternalContent10">
-        <div class="bg-light shadow-3 p-4" id="sideBarData">
+        <div class="d-flex justify-content-center">
+          <img class="p-2 mr-2" src="./asset/images/search.png"/>
+          <input
+            class="justify-content-center"
+            id="searchBar"
+            type="search"
+            placeholder="Search..."
+          />
+        </div>
+        <div class="bg-light shadow-3 p-3" id="sideBarData">
           <template>
             <button class="btn btn-link btn-block border-bottom m-1"></button>
           </template>
         </div>
+      </div>
     </section>
   </body>
 </html>

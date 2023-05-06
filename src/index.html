@@ -25,10 +25,10 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="./style.css" />
-    <script defer src="./views/dragNdrop/read.js"></script>
+    <script src="./views/dragNdrop/read.js" defer></script>
     <script src="./views/common/logo/logo.js" defer></script>
     <script src="./views/addOn/addOns.js" defer></script>
-    <script src="./views/sideBar/sideBar.js" defer></script>
+    <script src="./views/common/sideBar/sideBar.js" defer></script>
   </head>
   <body class="container-fluid d-flex justify-content-center align-items-start">
     <section class="d-flex row justify-content-center col-10">
@@ -41,7 +41,16 @@
     <section class="d-flex row col-2">
       <div class="mt-5 d-flex justify-content-end" id="sideBar"></div>
       <div class="collapse" id="navbarToggleExternalContent10">
-        <div class="bg-light shadow-3 p-4" id="sideBarData">
+        <div class="d-flex justify-content-center">
+          <img class="p-2 mr-2" src="./asset/images/search.png"/>
+          <input
+            class="justify-content-center"
+            id="searchBar"
+            type="search"
+            placeholder="Search..."
+          />
+        </div>
+        <div class="bg-light shadow-3 p-3" id="sideBarData">
           <template>
             <button class="btn btn-link btn-block border-bottom m-1"></button>
           </template>
