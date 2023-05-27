@@ -1,7 +1,9 @@
 let diplomaName = localStorage.getItem("diplomaName");
-let start = document.getElementById("btnStart");
-let stop = document.getElementById("btnStop");
-let audio = document.querySelector("audio");
+let btnStart = document.getElementById("btnStart");
+let btnStop = document.getElementById("btnStop");
+let btnDelete = document.getElementById("btnDelete");
+let btnEdit = document.getElementById("btnEdit");
+let audioPlayback = document.querySelector("audio");
 let playAudio = document.getElementById("audioPlay");
 
 let audioIN = { audio: true };
@@ -11,14 +13,19 @@ navigator.mediaDevices
   .then(function (mediaStreamObj) {
     let mediaRecorder = new MediaRecorder(mediaStreamObj);
 
-    start.addEventListener("click", function (ev) {
+    btnStart.addEventListener("click", function (ev) {
       mediaRecorder.start();
-      stop.removeAttribute("disabled");
+      btnStop.removeAttribute("disabled");
+    });
+    
+    btnDelete.addEventListener("click", function (ev) {
+      localStorage.clear();
+      location.reload();
     });
 
-    stop.addEventListener("click", function (ev) {
+    btnStop.addEventListener("click", function (ev) {
       mediaRecorder.stop();
-      stop.toggleAttribute("disabled");
+      btnStop.toggleAttribute("disabled");
     });
 
     mediaRecorder.ondataavailable = function (ev) {
@@ -30,17 +37,34 @@ navigator.mediaDevices
     mediaRecorder.onstop = function (ev) {
       let audioData = new Blob(dataArray, { type: "audio/mp3;" });
       dataArray = [];
-
       let audioSrc = window.URL.createObjectURL(audioData);
+      var reader = new FileReader();
 
       playAudio.src = audioSrc;
-      let downloadAudio = document.createElement("a");
-      downloadAudio.href = audioSrc;
-      downloadAudio.download = `graudationCeremony_${diplomaName}.mp3`;
-      downloadAudio.click();
+
+      reader.onload = function (e) {
+        console.log(e.target.result);
+        audioSrc = window.URL.createObjectURL(audioData);
+        playAudio.src = audioSrc;
+        localStorage.setItem(
+          "TempAudioData",
+          JSON.stringify(Array.from(new Uint8Array(e.target.result)))
+        );
+        if (!btnStart.hasAttribute("disabled")) {
+          btnStart.toggleAttribute("disabled");
+          btnStart.classList.add("invisible");
+          btnStop.classList.add("invisible");
+          btnDelete.classList.remove("invisible");
+          btnEdit.classList.remove("invisible");
+        }
+        let downloadAudio = document.createElement("a");
+        downloadAudio.href = audioSrc;
+        downloadAudio.download = `graudationCeremony_${diplomaName}.mp3`;
+        downloadAudio.click();
+      };
+      reader.readAsArrayBuffer(audioData);
     };
   })
-
   .catch(function (err) {
     console.log(err.name, err.message);
   });

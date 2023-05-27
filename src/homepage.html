@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recording</title>
+    <title>Homepage</title>
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
@@ -25,61 +25,61 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="./style.css" />
-
     <script src="./views/common/logo/logo.js" defer></script>
+    <script src="./views/homeUI/addOn/addOns.js" defer></script>
     <script src="./views/common/sideBar/sideBar.js" defer></script>
-    <script src="./views/record/record.js" defer></script>
     <script type="module" src="./views/dragNdrop/read.js" defer></script>
-    <script type="module" src="./views/dragNdrop/upload.js" defer></script>
   </head>
-  <body class="container-fluid d-flex justify-content-center align-items-start">
-    <section class="d-flex row justify-content-center col-9">
+  <body class="container d-flex justify-content-center align-items-start">
+    <section class="d-flex row justify-content-center col-md-9 col-sm-9">
       <div class="logo"></div>
-      <div
-        id="dragNdrop"
-        class="mt-5 d-flex justify-content-center align-items-center w-25"
-      >
-        <input type="file" id="file-input" accept="audio/*" />
-        <label
-          class="p-4 d-flex justify-content-around align-items-center"
-          for="file-input"
+      <div id="addOnComponents"></div>
+      <div class="d-flex justify-content-center mt-5">
+        <input
+          class="row btn btn-outline-*"
+          data-mdb-ripple-radius="65"
+          id="prevCourseBtn"
+          type="image"
+          src="./asset/images/leftIcon.png"
+        />
+
+        <span
+          class="d-flex align-self-center text-center font-weight-bold fs-4 mx-5 p-4"
+          id="titleOfDiploma"
+          >Title of Diploma</span
         >
-          <i class="fa-solid fa-upload"></i>
-          <img src="./asset/images/dragNdrop.png" />
-          &nbsp; Choose Or Drop
-          <br />
-          Audio Files
-        </label>
-      </div>
-      <div class="row mt-5 mb-5 p-5">
-        <audio id="audio"></audio>
-        <audio id="audioPlay" controls></audio>
-      </div>
-      <div class="d-flex col justify-content-evenly">
-        <button id="btnStart">Start Recording</button>
-        <button id="btnStop" disabled>Stop Recording</button>
-      </div>
-      <div class="d-flex col justify-content-evenly">
-        <button class="invisible" id="btnEdit">Edit Audio</button>
-        <button class="invisible" id="btnDelete">Delete Audio</button>
+
+        <input
+          class="row btn btn-outline-*"
+          data-mdb-ripple-radius="65"
+          id="nextCourseBtn"
+          type="image"
+          src="./asset/images/rightIcon.png"
+        />
       </div>
     </section>
-    <section class="d-flex row col-3">
+    <section class="d-flex row col-md-3 col-sm-3">
       <div class="mt-5 d-flex justify-content-end" id="sideBar"></div>
       <div
         class="collapse show bg-secondary rounded-3"
         id="navbarToggleExternalContent10"
       >
-        <div class="d-flex row justify-content-center p-2">
-          <div class="d-flex justify-content-between p-2">
-            <div class="font-weight-bold fs-4">
-              <span class="bg-white border border-dark border-2 px-5 py-1 rounded-pill" id="getByStudent">Student</span>
-            </div>
-            <div class="font-weight-bold fs-4">
-              <span class="bg-white border border-dark border-2 px-5 py-1 rounded-pill" id="getByDiploma">Diploma</span>
-            </div>
+        <div class="d-flex row justify-content-center p-3">
+          <div class="d-flex justify-content-evenly">
+            <span
+              class="font-weight-bold fs-5 bg-white border border-dark border-2 px-2 py-1 rounded-pill"
+              id="getByStudent"
+              >Student</span
+            >
+            <span
+              class="font-weight-bold fs-5 bg-white border border-dark border-2 px-2 py-1 rounded-pill"
+              id="getByDiploma"
+              >Diploma</span
+            >
           </div>
-          <div class="col d-flex justify-content-center mt-3 bg-white rounded-pill w-100">
+          <div
+            class="col d-flex justify-content-center mt-3 bg-white rounded-pill w-100"
+          >
             <img class="p-3" src="./asset/images/search.png" />
             <input
               id="searchBar"
@@ -96,5 +96,6 @@
         </div>
       </div>
     </section>
+    <audio id="audio"></audio>
   </body>
 </html>

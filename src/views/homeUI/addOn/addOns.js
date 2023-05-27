@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   e.preventDefault();
 
   const buttonComponent = document.querySelector("#addOnComponents");
-  fetch("./views/addOn/addOns.html")
+  fetch("./views/homeUI/addOn/addOns.html")
     .then((res) => res.text())
     .then((data) => {
       buttonComponent.innerHTML = data;

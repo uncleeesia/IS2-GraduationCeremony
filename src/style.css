@@ -31,6 +31,14 @@ label {
 #sideBarData{
   height: 700px;
   overflow: auto;
+  overflow-x: hidden;
+}
+#sideBarData::-webkit-scrollbar {
+  display: none;
+}
+#sideBarData
+  :nth-child(n) {
+    background-color: #eaeaea;
 }
 .animated-icon2 {
   width: 30px;
@@ -105,3 +113,4 @@ label {
   width: 0%;
   left: 50%;
 }
+

@@ -24,19 +24,19 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="./style.css" />
-    <script src="./views/common/logo/logo.js" defer></script>
-    <script src="./views/common/sideBar/sideBar.js" defer></script>
     <script
       type="text/javascript"
       src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
     ></script>
-    <script defer src="./views/dragNdrop/upload.js"></script>
-    <script defer src="./views/dragNdrop/read.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./views/common/logo/logo.js" defer></script>
+    <script src="./views/common/sideBar/sideBar.js" defer></script>
+    <script type="module" src="./views/dragNdrop/upload.js" defer></script>
+    <script type="module" src="./views/dragNdrop/read.js" defer></script>
   </head>
   <body class="container-fluid d-flex justify-content-center align-items-start">
-    <section class="d-flex row justify-content-center col-10">
-      <div class="logo mt-5 align-items-start"></div>
+    <section class="d-flex row justify-content-center col-9">
+      <div class="logo"></div>
       <div
         id="dragNdrop"
         class="mt-5 d-flex justify-content-center align-items-center w-25"
@@ -49,27 +49,40 @@
       </div>
       <pre class="text-center mt-5">
 After uploading the file, it will convert the file to JSON and data will appear in the top right hamburger
-Thereafter go ahead and proceed to record or upload your audio</pre
-      >
+Thereafter go ahead and proceed to record or upload your audio at the <b>Upload Audio</b> link above</pre>
     </section>
-    <section class="d-flex row col-2">
+    <section class="d-flex row col-3">
       <div class="mt-5 d-flex justify-content-end" id="sideBar"></div>
-      <div class="collapse" id="navbarToggleExternalContent10">
-        <div class="d-flex justify-content-center">
-          <img class="p-2 mr-2" src="./asset/images/search.png" />
-          <input
-            class="justify-content-center"
-            id="searchBar"
-            type="search"
-            placeholder="Search..."
-          />
+      <div
+        class="collapse show bg-secondary rounded-3"
+        id="navbarToggleExternalContent10"
+      >
+        <div class="d-flex row justify-content-center p-2">
+          <div class="d-flex justify-content-between p-2">
+            <div class="font-weight-bold fs-4">
+              <span class="bg-white border border-dark border-2 px-5 py-1 rounded-pill" id="getByStudent">Student</span>
+            </div>
+            <div class="font-weight-bold fs-4">
+              <span class="bg-white border border-dark border-2 px-5 py-1 rounded-pill" id="getByDiploma">Diploma</span>
+            </div>
+          </div>
+          <div class="col d-flex justify-content-center mt-3 bg-white rounded-pill w-100">
+            <img class="p-3" src="./asset/images/search.png" />
+            <input
+              id="searchBar"
+              type="search"
+              placeholder="Search..."
+              class="p-3 w-100 rounded-pill border-0"
+            />
+          </div>
         </div>
-        <div class="bg-light shadow-3 p-3" id="sideBarData">
+        <div class="bg-light shadow-3 p-3 bg-transparent" id="sideBarData">
           <template>
-            <button class="btn btn-link btn-block border-bottom m-1"></button>
+            <button class="btn btn-link btn-block m-1"></button>
           </template>
         </div>
       </div>
     </section>
+    <audio id="audio"></audio>
   </body>
 </html>
