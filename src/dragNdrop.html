@@ -34,8 +34,8 @@
     <script type="module" src="./views/dragNdrop/upload.js" defer></script>
     <script type="module" src="./views/dragNdrop/read.js" defer></script>
   </head>
-  <body class="container-fluid d-flex justify-content-center align-items-start">
-    <section class="d-flex row justify-content-center col-9">
+  <body class="container d-flex justify-content-center align-items-start">
+    <section class="d-flex row justify-content-center col-md-9 col-sm-9">
       <div class="logo"></div>
       <div
         id="dragNdrop"
@@ -48,25 +48,32 @@
         </label>
       </div>
       <pre class="text-center mt-5">
-After uploading the file, it will convert the file to JSON and data will appear in the top right hamburger
+After uploading the file, it will convert the file to JSON named "Sheet1.json"
+( Data will appear in the top right hamburger )
 Thereafter go ahead and proceed to record or upload your audio at the <b>Upload Audio</b> link above</pre>
     </section>
-    <section class="d-flex row col-3">
+    <section class="d-flex row col-md-3 col-sm-3">
       <div class="mt-5 d-flex justify-content-end" id="sideBar"></div>
       <div
         class="collapse show bg-secondary rounded-3"
         id="navbarToggleExternalContent10"
       >
-        <div class="d-flex row justify-content-center p-2">
-          <div class="d-flex justify-content-between p-2">
-            <div class="font-weight-bold fs-4">
-              <span class="bg-white border border-dark border-2 px-5 py-1 rounded-pill" id="getByStudent">Student</span>
-            </div>
-            <div class="font-weight-bold fs-4">
-              <span class="bg-white border border-dark border-2 px-5 py-1 rounded-pill" id="getByDiploma">Diploma</span>
-            </div>
+        <div class="d-flex row justify-content-center p-3">
+          <div class="d-flex justify-content-evenly">
+            <span
+              class="font-weight-bold fs-5 bg-white border border-dark border-2 px-2 py-1 rounded-pill"
+              id="getByStudent"
+              >Student</span
+            >
+            <span
+              class="font-weight-bold fs-5 bg-white border border-dark border-2 px-2 py-1 rounded-pill"
+              id="getByDiploma"
+              >Diploma</span
+            >
           </div>
-          <div class="col d-flex justify-content-center mt-3 bg-white rounded-pill w-100">
+          <div
+            class="col d-flex justify-content-center mt-3 bg-white rounded-pill w-100"
+          >
             <img class="p-3" src="./asset/images/search.png" />
             <input
               id="searchBar"

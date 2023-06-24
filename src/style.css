@@ -1,5 +1,5 @@
-a{
-text-decoration: none;
+a {
+  text-decoration: none;
 }
 body {
   background-color: #fcfcfc;
@@ -28,18 +28,25 @@ label {
   margin: 0 auto 1em auto;
   cursor: pointer;
 }
-#sideBarData{
-  height: 700px;
+#sideBarData {
+  height: 675px;
   overflow: auto;
   overflow-x: hidden;
+}
+#navbarToggleExternalContent10{
+  border-radius: 15px;
 }
 #sideBarData::-webkit-scrollbar {
   display: none;
 }
-#sideBarData
-  :nth-child(n) {
-    background-color: #eaeaea;
+#sideBarData :nth-child(n) {
+  background-color: #eaeaea;
 }
+
+.BGofHomeUI{
+  background-color: #d9d9d9;
+}
+
 .animated-icon2 {
   width: 30px;
   height: 20px;
@@ -113,4 +120,3 @@ label {
   width: 0%;
   left: 50%;
 }
-

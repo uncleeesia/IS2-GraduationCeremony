@@ -5,12 +5,22 @@ var buttonTemplate = template.content.querySelector("button");
 var searchBar = document.getElementById("searchBar");
 var tempData;
 var diplomaName = [];
+var studentName = [];
 var searchStudent = true;
-var localStorageDiploma = localStorage.getItem("TempDiploma");
+var firstStudentOfCourse = "";
+var localStorageDiploma = localStorage.getItem("TempDiploma")
+  ? localStorage.getItem("TempDiploma")
+  : "Show All Diploma";
+var localStorageStudent = localStorage.getItem("TempStudent")
+  ? localStorage.getItem("TempStudent")
+  : "Name Of Recipient";
 const permData = {};
 var prevCourseBtn = document.getElementById("prevCourseBtn");
 var nextCourseBtn = document.getElementById("nextCourseBtn");
 var displayOfDiploma = document.getElementById("titleOfDiploma");
+var nameOfRecipient = document.getElementById("NameOfRecipient");
+var prevStudentBtn = document.getElementById("prevStudentBtn");
+var nextStudentBtn = document.getElementById("nextStudentBtn");
 
 window.addEventListener("load", function () {
   var xhr = new XMLHttpRequest();
@@ -42,9 +52,7 @@ window.addEventListener("load", function () {
           );
         }
       });
-      displayOfDiploma.innerHTML = !localStorageDiploma
-        ? ""
-        : localStorageDiploma;
+
       loadData(
         data,
         isSearchActive,
@@ -53,6 +61,12 @@ window.addEventListener("load", function () {
         localStorageDiploma
       );
       permData.data = data;
+    } else {
+      if (window.location.pathname == "/src/dragNdrop.html") {
+        alert("Please update student data in student info tab.");
+      } else {
+        location.href = "./dragNdrop.html";
+      }
     }
     var sidebarBtn = document.getElementById("sidebarBtn");
     let audioPlayback = document.querySelector("audio");
@@ -68,27 +82,6 @@ window.addEventListener("load", function () {
     });
   };
   xhr.send();
-
-  prevCourseBtn.addEventListener("click", function (e) {
-    var indexOfLocal = diplomaName.indexOf(localStorageDiploma);
-    localStorage.setItem("TempDiploma", diplomaName[indexOfLocal - 1]);
-
-    if (diplomaName[indexOfLocal - 1] === undefined) {
-      localStorage.setItem("TempDiploma", diplomaName[0]);
-    }
-    location.reload();
-  });
-
-  nextCourseBtn.addEventListener("click", function (e) {
-    var indexOfLocal = diplomaName.indexOf(localStorageDiploma);
-    localStorage.setItem("TempDiploma", diplomaName[indexOfLocal + 1]);
-
-    if (diplomaName[indexOfLocal + 1] === undefined) {
-      localStorage.setItem("TempDiploma", diplomaName[diplomaName.length - 1]);
-    }
-    location.reload();
-  });
-
   document
     .getElementById("getByDiploma")
     .addEventListener("click", function (e) {
@@ -100,8 +93,97 @@ window.addEventListener("load", function () {
     .addEventListener("click", function (e) {
       searchStudent = true;
       loadData(permData.data, false, "", searchStudent, localStorageDiploma);
-      console.log(localStorageDiploma);
     });
+    window.addEventListener("loadFirst", () => {
+      localStorage.setItem("TempStudent", studentName[1]);
+      displayFirstStudent();
+      });
+  if (window.location.pathname == "/src/homepage.html") {
+    window.addEventListener("loadedData", () => {
+      var event = new Event("changeCourse");
+
+      
+      window.removeEventListener("loadFirst", () => {});
+
+      displayOfDiploma.innerHTML = !localStorageDiploma
+        ? "Title Of Diploma"
+        : localStorageDiploma;
+
+      window.removeEventListener("loadFirst", () => {});
+
+      prevCourseBtn.addEventListener("click", function (e) {
+        var indexOfLocal = diplomaName.indexOf(localStorageDiploma);
+        localStorage.setItem("TempDiploma", diplomaName[indexOfLocal - 1]);
+
+        if (
+          diplomaName[indexOfLocal - 1] === undefined ||
+          !localStorageDiploma
+        ) {
+          localStorage.setItem("TempDiploma", diplomaName[0]);
+        }
+
+        location.reload();
+      });
+
+      nextCourseBtn.addEventListener("click", function (e) {
+        var indexOfLocal = diplomaName.indexOf(localStorageDiploma);
+        localStorage.setItem("TempDiploma", diplomaName[indexOfLocal + 1]);
+
+        if (diplomaName[indexOfLocal + 1] === undefined) {
+          localStorage.setItem(
+            "TempDiploma",
+            diplomaName[diplomaName.length - 1]
+          );
+          localStorage.setItem("TempStudent", studentName[studentName.length-1]);
+        }
+        if (!localStorageDiploma) {
+          localStorage.setItem("TempDiploma", diplomaName[1]);
+        }
+
+        location.reload();
+      });
+
+      prevStudentBtn.addEventListener("click", function (e) {
+        var indexOfLocal = studentName.indexOf(
+          localStorageStudent.toUpperCase()
+        );
+        localStorage.setItem("TempStudent", studentName[indexOfLocal - 1]);
+
+        if (
+          studentName[indexOfLocal - 1] === "Name Of Recipient" ||
+          !localStorageStudent ||
+          studentName[indexOfLocal - 1] === undefined
+        ) {
+          localStorage.setItem("TempStudent", studentName[1]);
+        }
+        displayNormStudent();
+        location.reload();
+      });
+
+      nextStudentBtn.addEventListener("click", function (e) {
+        var indexOfLocal = studentName.indexOf(
+          localStorageStudent.toUpperCase()
+        );
+
+        localStorage.setItem("TempStudent", studentName[indexOfLocal + 1]);
+
+        if (
+          studentName[indexOfLocal + 1] === undefined ||
+          studentName[indexOfLocal + 1] === "Name Of Recipient"
+        ) {
+          localStorage.setItem(
+            "TempStudent",
+            studentName[studentName.length - 1]
+          );
+        }
+        if (!localStorageStudent) {
+          localStorage.setItem("TempStudent", studentName[1]);
+        }
+        displayNormStudent();
+        location.reload();
+      });
+    });
+  }
 });
 
 function loadData(
@@ -113,28 +195,41 @@ function loadData(
 ) {
   let total = 0;
   const tempDiploma = ["Show All Diploma"];
+  const tempStudent = ["Name Of Recipient"];
+  var lastId = 0;
   sideBarData.innerText = "";
   data.forEach((e) => {
     tempData = document.importNode(buttonTemplate, true);
     if (type) {
-      tempData.textContent += e.Name;
-      tempData.id = e.id;
       tempDiploma.push(e.Diploma);
       diplomaName = [...new Set(tempDiploma)];
-      if (defaultDiploma && defaultDiploma != "Show All Diploma") {
-        if (
-          e.Diploma != defaultDiploma ||
-          (search && !e.Name.toLowerCase().includes(tempInput))
-        ) {
-          tempData.style.display = "none";
+      if (
+        e.Diploma === defaultDiploma ||
+        defaultDiploma === "Show All Diploma"
+      ) {
+        tempData.textContent = e.Name;
+        tempData.id = e.id;
+        lastId = e.id;
+
+        tempStudent.push(e.Name.toUpperCase());
+        studentName = tempStudent;
+        firstStudentOfCourse = studentName[1];
+        if (search && type) {
+          if (search && !e.Name.toLowerCase().includes(tempInput)) {
+            tempData.style.display = "none";
+          }
         }
+        sideBarData.appendChild(tempData);
       }
-      sideBarData.appendChild(tempData);
+
       total += 1;
       localStorage.setItem("totalStudent", total);
-      document.getElementById(e.id).addEventListener("click", function (e) {
-        location.href = "homepage.html";
-      });
+      if (e.id === lastId) {
+        document.getElementById(e.id).addEventListener("click", function (e) {
+          localStorage.setItem("TempStudent", e.target.innerText);
+          location.href = "homepage.html";
+        });
+      }
     } else {
       tempData.textContent = e;
       tempData.id = e;
@@ -151,9 +246,23 @@ function loadData(
       });
     }
   });
+  var event = new Event("loadedData");
+  window.dispatchEvent(event);
+  var eDiscontinued = new Event("loadFirst");
+  window.dispatchEvent(eDiscontinued);
 }
 
 function playCurrentName(buttonInfo) {
   console.log(buttonInfo.getAttribute("startDuration"));
   console.log(buttonInfo.getAttribute("endDuration"));
+}
+function displayNormStudent() {
+  nameOfRecipient.innerHTML = !localStorageStudent
+    ? "Name Of Recipient"
+    : localStorageStudent;
+}
+function displayFirstStudent() {
+  nameOfRecipient.innerHTML = !firstStudentOfCourse
+    ? "Name Of Recipient"
+    : firstStudentOfCourse;
 }

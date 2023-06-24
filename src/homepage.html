@@ -34,37 +34,75 @@
     <section class="d-flex row justify-content-center col-md-9 col-sm-9">
       <div class="logo"></div>
       <div id="addOnComponents"></div>
-      <div class="d-flex justify-content-center mt-5">
-        <input
-          class="row btn btn-outline-*"
-          data-mdb-ripple-radius="65"
-          id="prevCourseBtn"
-          type="image"
-          src="./asset/images/leftIcon.png"
-        />
-
-        <span
-          class="d-flex align-self-center text-center font-weight-bold fs-4 mx-5 p-4"
-          id="titleOfDiploma"
-          >Title of Diploma</span
+      <div class="row d-flex justify-content-center">
+        <div
+          class="BGofHomeUI d-flex col-12 justify-content-between mt-5 w-75 rounded-pill shadow-1-strong p-0"
         >
+          <input
+            class="row btn btn-outline-* px-3"
+            data-mdb-ripple-radius="65"
+            id="prevCourseBtn"
+            type="image"
+            src="./asset/images/leftIcon.png"
+          />
 
-        <input
-          class="row btn btn-outline-*"
-          data-mdb-ripple-radius="65"
-          id="nextCourseBtn"
-          type="image"
-          src="./asset/images/rightIcon.png"
-        />
+          <span
+            class="d-flex align-self-center text-center font-weight-bold fs-5"
+            id="titleOfDiploma"
+            >Title of Diploma</span
+          >
+
+          <input
+            class="row btn btn-outline-* px-3"
+            data-mdb-ripple-radius="65"
+            id="nextCourseBtn"
+            type="image"
+            src="./asset/images/rightIcon.png"
+          />
+        </div>
+        <div
+          class="BGofHomeUI d-flex col-12 justify-content-center mt-5 w-75 rounded-pill shadow-1-strong p-0"
+        >
+          <span
+            class="d-flex align-self-center text-center font-weight-bold fs-5 p-3"
+            id="NameOfRecipient"
+            >Name Of Recipient</span
+          >
+        </div>
+        <div class="d-flex col-12 justify-content-evenly mt-5 w-75">
+          <input
+            class="row btn btn-outline-*"
+            data-mdb-ripple-radius="65"
+            id="prevStudentBtn"
+            type="image"
+            src="./asset/images/leftIcon.png"
+          />
+
+          <input
+            class="row btn btn-outline-*"
+            data-mdb-ripple-radius="65"
+            id="pauseStudentBtn"
+            type="image"
+            src="./asset/images/playIcon.png"
+          />
+
+          <input
+            class="row btn btn-outline-*"
+            data-mdb-ripple-radius="65"
+            id="nextStudentBtn"
+            type="image"
+            src="./asset/images/rightIcon.png"
+          />
+        </div>
       </div>
     </section>
     <section class="d-flex row col-md-3 col-sm-3">
       <div class="mt-5 d-flex justify-content-end" id="sideBar"></div>
       <div
-        class="collapse show bg-secondary rounded-3"
+        class="collapse show bg-secondary"
         id="navbarToggleExternalContent10"
       >
-        <div class="d-flex row justify-content-center p-3">
+        <div class="d-flex row justify-content-center p-2">
           <div class="d-flex justify-content-evenly">
             <span
               class="font-weight-bold fs-5 bg-white border border-dark border-2 px-2 py-1 rounded-pill"
@@ -78,18 +116,18 @@
             >
           </div>
           <div
-            class="col d-flex justify-content-center mt-3 bg-white rounded-pill w-100"
+            class="col d-flex justify-content-center mt-2 bg-white rounded-pill w-100"
           >
-            <img class="p-3" src="./asset/images/search.png" />
+            <img class="p-2" src="./asset/images/search.png" />
             <input
               id="searchBar"
               type="search"
               placeholder="Search..."
-              class="p-3 w-100 rounded-pill border-0"
+              class="p-2 w-100 rounded-pill border-0"
             />
           </div>
         </div>
-        <div class="bg-light shadow-3 p-3 bg-transparent" id="sideBarData">
+        <div class="bg-light shadow-3 bg-transparent" id="sideBarData">
           <template>
             <button class="btn btn-link btn-block m-1"></button>
           </template>
