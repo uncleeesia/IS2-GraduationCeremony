@@ -78,7 +78,6 @@ window.addEventListener("DOMContentLoaded", function (e) {
     "drop",
     (e) => {
       e.preventDefault();
-      e.stopPropagation();
       dragNdrop.classList.remove("active");
       let draggedData = e.dataTransfer;
       let file = draggedData.files[0];
@@ -91,7 +90,6 @@ window.addEventListener("DOMContentLoaded", function (e) {
     "dragenter",
     (e) => {
       e.preventDefault();
-      e.stopPropagation();
       dragNdrop.classList.add("active");
     },
     false
@@ -101,7 +99,6 @@ window.addEventListener("DOMContentLoaded", function (e) {
     "dragleave",
     (e) => {
       e.preventDefault();
-      e.stopPropagation();
       dragNdrop.classList.remove("active");
     },
     false
@@ -111,7 +108,6 @@ window.addEventListener("DOMContentLoaded", function (e) {
     "dragover",
     (e) => {
       e.preventDefault();
-      e.stopPropagation();
       dragNdrop.classList.add("active");
     },
     false

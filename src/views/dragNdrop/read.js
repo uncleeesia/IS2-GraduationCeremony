@@ -94,22 +94,16 @@ window.addEventListener("load", function () {
       searchStudent = true;
       loadData(permData.data, false, "", searchStudent, localStorageDiploma);
     });
-    window.addEventListener("loadFirst", () => {
-      localStorage.setItem("TempStudent", studentName[1]);
-      displayFirstStudent();
-      });
+
   if (window.location.pathname == "/src/homepage.html") {
     window.addEventListener("loadedData", () => {
-      var event = new Event("changeCourse");
-
-      
-      window.removeEventListener("loadFirst", () => {});
-
       displayOfDiploma.innerHTML = !localStorageDiploma
         ? "Title Of Diploma"
         : localStorageDiploma;
 
-      window.removeEventListener("loadFirst", () => {});
+      nameOfRecipient.innerHTML = !localStorageStudent
+        ? "Name Of Recipient"
+        : localStorageStudent;
 
       prevCourseBtn.addEventListener("click", function (e) {
         var indexOfLocal = diplomaName.indexOf(localStorageDiploma);
@@ -120,6 +114,10 @@ window.addEventListener("load", function () {
           !localStorageDiploma
         ) {
           localStorage.setItem("TempDiploma", diplomaName[0]);
+          localStorage.setItem(
+            "TempStudent",
+            studentName[1]
+          );
         }
 
         location.reload();
@@ -134,7 +132,10 @@ window.addEventListener("load", function () {
             "TempDiploma",
             diplomaName[diplomaName.length - 1]
           );
-          localStorage.setItem("TempStudent", studentName[studentName.length-1]);
+          localStorage.setItem(
+            "TempStudent",
+            studentName[studentName.length - 1]
+          );
         }
         if (!localStorageDiploma) {
           localStorage.setItem("TempDiploma", diplomaName[1]);
@@ -156,7 +157,6 @@ window.addEventListener("load", function () {
         ) {
           localStorage.setItem("TempStudent", studentName[1]);
         }
-        displayNormStudent();
         location.reload();
       });
 
@@ -179,7 +179,6 @@ window.addEventListener("load", function () {
         if (!localStorageStudent) {
           localStorage.setItem("TempStudent", studentName[1]);
         }
-        displayNormStudent();
         location.reload();
       });
     });
@@ -248,21 +247,9 @@ function loadData(
   });
   var event = new Event("loadedData");
   window.dispatchEvent(event);
-  var eDiscontinued = new Event("loadFirst");
-  window.dispatchEvent(eDiscontinued);
 }
 
 function playCurrentName(buttonInfo) {
   console.log(buttonInfo.getAttribute("startDuration"));
   console.log(buttonInfo.getAttribute("endDuration"));
-}
-function displayNormStudent() {
-  nameOfRecipient.innerHTML = !localStorageStudent
-    ? "Name Of Recipient"
-    : localStorageStudent;
-}
-function displayFirstStudent() {
-  nameOfRecipient.innerHTML = !firstStudentOfCourse
-    ? "Name Of Recipient"
-    : firstStudentOfCourse;
 }
