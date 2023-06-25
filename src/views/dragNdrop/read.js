@@ -7,7 +7,6 @@ var tempData;
 var diplomaName = [];
 var studentName = [];
 var searchStudent = true;
-var firstStudentOfCourse = "";
 var localStorageDiploma = localStorage.getItem("TempDiploma")
   ? localStorage.getItem("TempDiploma")
   : "Show All Diploma";
@@ -108,17 +107,20 @@ window.addEventListener("load", function () {
       prevCourseBtn.addEventListener("click", function (e) {
         var indexOfLocal = diplomaName.indexOf(localStorageDiploma);
         localStorage.setItem("TempDiploma", diplomaName[indexOfLocal - 1]);
-
+        loadData(
+          permData.data,
+          false,
+          "",
+          searchStudent,
+          diplomaName[indexOfLocal - 1]
+        );
         if (
           diplomaName[indexOfLocal - 1] === undefined ||
           !localStorageDiploma
         ) {
           localStorage.setItem("TempDiploma", diplomaName[0]);
-          localStorage.setItem(
-            "TempStudent",
-            studentName[1]
-          );
         }
+        localStorage.setItem("TempStudent", studentName[1]);
 
         location.reload();
       });
@@ -126,7 +128,13 @@ window.addEventListener("load", function () {
       nextCourseBtn.addEventListener("click", function (e) {
         var indexOfLocal = diplomaName.indexOf(localStorageDiploma);
         localStorage.setItem("TempDiploma", diplomaName[indexOfLocal + 1]);
-
+        loadData(
+          permData.data,
+          false,
+          "",
+          searchStudent,
+          diplomaName[indexOfLocal + 1]
+        );
         if (diplomaName[indexOfLocal + 1] === undefined) {
           localStorage.setItem(
             "TempDiploma",
@@ -141,6 +149,7 @@ window.addEventListener("load", function () {
           localStorage.setItem("TempDiploma", diplomaName[1]);
         }
 
+        localStorage.setItem("TempStudent", studentName[1]);
         location.reload();
       });
 
@@ -212,7 +221,6 @@ function loadData(
 
         tempStudent.push(e.Name.toUpperCase());
         studentName = tempStudent;
-        firstStudentOfCourse = studentName[1];
         if (search && type) {
           if (search && !e.Name.toLowerCase().includes(tempInput)) {
             tempData.style.display = "none";
@@ -240,6 +248,7 @@ function loadData(
       sideBarData.appendChild(tempData);
       document.getElementById(e).addEventListener("click", function (e) {
         loadData(permData.data, false, "", "student", e.target.id);
+        localStorage.setItem("TempStudent", studentName[1]);
         localStorage.setItem("TempDiploma", e.target.id);
         location.reload();
       });
