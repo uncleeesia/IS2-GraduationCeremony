@@ -1,4 +1,4 @@
-let diplomaName = localStorage.getItem("diplomaName");
+let diplomaName = localStorage.getItem("TempDiploma");
 let btnStart = document.getElementById("btnStart");
 let btnStop = document.getElementById("btnStop");
 let btnDelete = document.getElementById("btnDelete");
@@ -59,7 +59,7 @@ navigator.mediaDevices
         }
         let downloadAudio = document.createElement("a");
         downloadAudio.href = audioSrc;
-        downloadAudio.download = `graudationCeremony_${diplomaName}.mp3`;
+        downloadAudio.download = `graudationCeremony.mp3`;
         downloadAudio.click();
       };
       reader.readAsArrayBuffer(audioData);

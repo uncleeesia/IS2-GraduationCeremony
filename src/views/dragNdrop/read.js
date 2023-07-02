@@ -1,4 +1,5 @@
 import { analyzer } from "../record/analyzer.js";
+let playAudio = document.getElementById("studentNameAudio");
 var sideBarData = document.getElementById("sideBarData");
 var template = document.getElementsByTagName("template")[0];
 var buttonTemplate = template.content.querySelector("button");
@@ -7,12 +8,10 @@ var tempData;
 var diplomaName = [];
 var studentName = [];
 var searchStudent = true;
-var localStorageDiploma = localStorage.getItem("TempDiploma")
-  ? localStorage.getItem("TempDiploma")
-  : "Show All Diploma";
-var localStorageStudent = localStorage.getItem("TempStudent")
-  ? localStorage.getItem("TempStudent")
-  : "Name Of Recipient";
+var localStorageDiploma =
+  localStorage.getItem("TempDiploma") ?? "Show All Diploma";
+var localStorageStudent =
+  localStorage.getItem("TempStudent") ?? "Name Of Recipient";
 const permData = {};
 var prevCourseBtn = document.getElementById("prevCourseBtn");
 var nextCourseBtn = document.getElementById("nextCourseBtn");
@@ -20,10 +19,12 @@ var displayOfDiploma = document.getElementById("titleOfDiploma");
 var nameOfRecipient = document.getElementById("NameOfRecipient");
 var prevStudentBtn = document.getElementById("prevStudentBtn");
 var nextStudentBtn = document.getElementById("nextStudentBtn");
-
+var pauseStudentBtn = document.getElementById("pauseStudentBtn");
+var preloadedData;
 window.addEventListener("load", function () {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "../Sheet1.json", true);
+
   xhr.onload = function () {
     if (xhr.status === 200) {
       var data = JSON.parse(xhr.responseText);
@@ -75,7 +76,12 @@ window.addEventListener("load", function () {
     const audioData = new Blob([arrayBuffer], { type: "audio/mp3" });
     audioSrc = URL.createObjectURL(audioData);
     sidebarBtn.addEventListener("click", function () {
-      if (!document.getElementById("1").getAttribute("startDuration")) {
+      if (
+        !document
+          .getElementsByClassName("studentName")
+          .item(1)
+          .getAttribute("startDuration")
+      ) {
         analyzer(audioPlayback, audioSrc);
       }
     });
@@ -190,6 +196,55 @@ window.addEventListener("load", function () {
         }
         location.reload();
       });
+
+      pauseStudentBtn.addEventListener("click", function (e) {
+        const parsedData = JSON.parse(localStorage.getItem("TempAudioData"));
+        const audioData = new Uint8Array(parsedData);
+        if (localStorageStudent == "Name Of Recipient") {
+          localStorage.setItem("TempStudent", studentName[1]);
+          location.reload();
+          setTimeout(() => pauseStudentBtn.click(), 1000);
+        } else {
+          if (
+            !document
+              .getElementById("navbarToggleExternalContent10")
+              .classList.contains("show")
+          ) {
+            sidebarBtn.click();
+          }
+          var indexOfStudent = permData.data.filter(
+            (item) => item.Name.toUpperCase() === localStorageStudent
+          );
+
+          var duration = playCurrentName(
+            document.getElementById(indexOfStudent[0].id)
+          );
+
+          const audioContext = new AudioContext();
+
+          audioContext.decodeAudioData(audioData.buffer, (audioBuffer) => {
+            const analyzer = audioContext.createAnalyser();
+
+            const audioSource = audioContext.createBufferSource();
+            audioSource.buffer = audioBuffer;
+            audioSource.connect(analyzer);
+            analyzer.connect(audioContext.destination);
+
+            const bufferLength = analyzer.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function analyzeAudio() {
+              analyzer.getByteTimeDomainData(dataArray);
+
+              requestAnimationFrame(analyzeAudio);
+            }
+
+            analyzeAudio();
+
+            audioSource.start(0, duration.start, duration.end - duration.start);
+          });
+        }
+      });
     });
   }
 });
@@ -206,6 +261,7 @@ function loadData(
   const tempStudent = ["Name Of Recipient"];
   var lastId = 0;
   sideBarData.innerText = "";
+
   data.forEach((e) => {
     tempData = document.importNode(buttonTemplate, true);
     if (type) {
@@ -217,10 +273,25 @@ function loadData(
       ) {
         tempData.textContent = e.Name;
         tempData.id = e.id;
+        tempData.classList.add("studentName");
+        if (window.location.pathname == "/src/homepage.html") {
+          preloadedData.forEach((preload) => {
+            if (e.id === preload.studentNo) {
+              console.log(preload.studentNo);
+              tempData.setAttribute("startDuration", preload.startTime);
+              tempData.setAttribute(
+                "endDuration",
+                preload.startTime + preload.duration
+              );
+            }
+          });
+        }
+
         lastId = e.id;
 
         tempStudent.push(e.Name.toUpperCase());
         studentName = tempStudent;
+
         if (search && type) {
           if (search && !e.Name.toLowerCase().includes(tempInput)) {
             tempData.style.display = "none";
@@ -259,6 +330,15 @@ function loadData(
 }
 
 function playCurrentName(buttonInfo) {
-  console.log(buttonInfo.getAttribute("startDuration"));
-  console.log(buttonInfo.getAttribute("endDuration"));
+  var start = buttonInfo.getAttribute("startDuration");
+  var end = buttonInfo.getAttribute("endDuration");
+  return { start: start, end: end };
 }
+fetch("../../preloaded.json")
+  .then((response) => response.json())
+  .then((data) => {
+    preloadedData = data;
+  })
+  .catch((error) => {
+    console.log("Error:", error);
+  });

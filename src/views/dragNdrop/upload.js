@@ -45,7 +45,16 @@ window.addEventListener("DOMContentLoaded", function (e) {
           "TempAudioData",
           JSON.stringify(Array.from(new Uint8Array(reader.result)))
         );
-        analyzer(audioPlayback,audioSrc);
+        confirm(
+          `
+          We will generate JSON File of audio duration. 
+
+          it will be named "preloaded.json" 
+          
+          Please download it into the root repo and wait for it to load...
+          `
+        );
+        analyzer(audioPlayback, audioSrc);
         if (!btnStart.hasAttribute("disabled")) {
           btnStart.toggleAttribute("disabled");
           btnStart.classList.add("invisible");
@@ -57,7 +66,13 @@ window.addEventListener("DOMContentLoaded", function (e) {
         var data = new Uint8Array(e.target.result);
         var workbook = XLSX.read(data, { type: "array" });
         var sheetNameList = workbook.SheetNames;
-
+        confirm(
+          `
+          We will generate a JSON File. 
+          it will be named Sheet1.json 
+          Please place it in the root repo
+          `
+        );
         sheetNameList.forEach(function (y) {
           var worksheet = workbook.Sheets[y];
           var json = XLSX.utils.sheet_to_json(worksheet);

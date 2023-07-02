@@ -1,7 +1,7 @@
 export function analyzer(audioType, audioSrc = "") {
-  let totalStudent = localStorage.getItem("totalStudent");
-  let studentNo = 1;
+  var studentNo = 0;
 
+  var tempDataToJsonFile = [];
   const audioContext = new window.AudioContext();
   const audioElement = audioType;
   const source = audioContext.createMediaElementSource(audioElement);
@@ -33,29 +33,28 @@ export function analyzer(audioType, audioSrc = "") {
 
     analyzer.getByteTimeDomainData(dataArray);
 
-    let sum = 0;
-    for (let i = 0; i < bufferLength; i++) {
-      sum += Math.abs(dataArray[i] - 128);
-    }
-    const averageAmplitude = sum / bufferLength;
+    const silenceThreshold = 1;
 
-    const silenceThreshold = 2;
+    const isSilent = dataArray.every(
+      (value) => Math.abs(value - 128) < silenceThreshold
+    );
 
-    if (averageAmplitude < silenceThreshold) {
+    if (isSilent) {
       if (startTime !== 0) {
         const endTime = audioElement.currentTime;
         const duration = endTime - startTime;
-        console.log(`Silence detected! Duration: ${endTime - duration} seconds`);
+        console.log(`Silence detected! Duration: ${duration} seconds`);
 
-        let studentName = document.getElementById(studentNo);
-
-        studentName.setAttribute("startDuration", endTime - duration);
-        studentName.setAttribute("endDuration", endTime);
+        let studentName = document
+          .getElementsByClassName("studentName")
+          .item(studentNo);
+        tempDataToJsonFile.push({
+          studentNo: studentName.id,
+          startTime: endTime - duration,
+          duration: duration,
+        });
 
         studentNo += 1;
-        if (studentNo > totalStudent) {
-          clearInterval(intervalId);
-        }
       }
       startTime = 0;
     } else {
@@ -63,8 +62,38 @@ export function analyzer(audioType, audioSrc = "") {
         startTime = audioElement.currentTime;
       }
     }
+    requestAnimationFrame(checkForSilence);
   }
+  const waitForSilence = new Promise((resolve, reject) => {
+    const handleSilenceFinished = () => {
+      audioElement.removeEventListener("ended", handleSilenceFinished);
+      resolve();
+    };
+    audioElement.addEventListener("ended", handleSilenceFinished);
+  });
 
-  const intervalId = setInterval(checkForSilence, 110);
+  checkForSilence();
   audioType = "";
+  return waitForSilence.then(() => {
+    if (
+      window.location.pathname == "/src/record.html" &&
+      studentNo == tempDataToJsonFile.length
+    ) {
+      setTimeout(
+        () => saveObjectToJSONFile(tempDataToJsonFile, "preloaded.json"),
+        1500
+      );
+    }
+  });
+}
+function saveObjectToJSONFile(obj, filename) {
+  const jsonStr = JSON.stringify(obj);
+  console.log(obj);
+  const blob = new Blob([jsonStr], { type: "application/json" });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+
+  link.click();
 }
