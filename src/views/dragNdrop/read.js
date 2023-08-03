@@ -1,5 +1,4 @@
 import { analyzer } from "../record/analyzer.js";
-let playAudio = document.getElementById("studentNameAudio");
 var sideBarData = document.getElementById("sideBarData");
 var template = document.getElementsByTagName("template")[0];
 var buttonTemplate = template.content.querySelector("button");
@@ -8,10 +7,12 @@ var tempData;
 var diplomaName = [];
 var studentName = [];
 var searchStudent = true;
-var localStorageDiploma =
-  localStorage.getItem("TempDiploma") ?? "Show All Diploma";
-var localStorageStudent =
-  localStorage.getItem("TempStudent") ?? "Name Of Recipient";
+var localStorageDiploma = localStorage.getItem("TempDiploma")
+  ? localStorage.getItem("TempDiploma")
+  : "Show All Diploma";
+var localStorageStudent = localStorage.getItem("TempStudent")
+  ? localStorage.getItem("TempStudent")
+  : "Name Of Recipient";
 const permData = {};
 var prevCourseBtn = document.getElementById("prevCourseBtn");
 var nextCourseBtn = document.getElementById("nextCourseBtn");
@@ -19,12 +20,10 @@ var displayOfDiploma = document.getElementById("titleOfDiploma");
 var nameOfRecipient = document.getElementById("NameOfRecipient");
 var prevStudentBtn = document.getElementById("prevStudentBtn");
 var nextStudentBtn = document.getElementById("nextStudentBtn");
-var pauseStudentBtn = document.getElementById("pauseStudentBtn");
-var preloadedData;
+
 window.addEventListener("load", function () {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "../Sheet1.json", true);
-
   xhr.onload = function () {
     if (xhr.status === 200) {
       var data = JSON.parse(xhr.responseText);
@@ -76,12 +75,7 @@ window.addEventListener("load", function () {
     const audioData = new Blob([arrayBuffer], { type: "audio/mp3" });
     audioSrc = URL.createObjectURL(audioData);
     sidebarBtn.addEventListener("click", function () {
-      if (
-        !document
-          .getElementsByClassName("studentName")
-          .item(1)
-          .getAttribute("startDuration")
-      ) {
+      if (!document.getElementById("1").getAttribute("startDuration")) {
         analyzer(audioPlayback, audioSrc);
       }
     });
@@ -261,7 +255,6 @@ function loadData(
   const tempStudent = ["Name Of Recipient"];
   var lastId = 0;
   sideBarData.innerText = "";
-
   data.forEach((e) => {
     tempData = document.importNode(buttonTemplate, true);
     if (type) {
@@ -288,7 +281,6 @@ function loadData(
 
         tempStudent.push(e.Name.toUpperCase());
         studentName = tempStudent;
-
         if (search && type) {
           if (search && !e.Name.toLowerCase().includes(tempInput)) {
             tempData.style.display = "none";
@@ -332,11 +324,3 @@ function getDuration(buttonInfo) {
   var end = buttonInfo.getAttribute("endDuration");
   return { start: start, end: end };
 }
-fetch("../../preloaded.json")
-  .then((response) => response.json())
-  .then((data) => {
-    preloadedData = data;
-  })
-  .catch((error) => {
-    console.log("Error:", error);
-  });

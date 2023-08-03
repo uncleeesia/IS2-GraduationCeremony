@@ -1,4 +1,4 @@
-let diplomaName = localStorage.getItem("TempDiploma");
+let diplomaName = localStorage.getItem("diplomaName");
 let btnStart = document.getElementById("btnStart");
 let btnStop = document.getElementById("btnStop");
 let btnDelete = document.getElementById("btnDelete");

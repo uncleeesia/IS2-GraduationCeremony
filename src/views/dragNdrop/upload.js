@@ -54,16 +54,7 @@ window.addEventListener("DOMContentLoaded", function (e) {
           "TempAudioData",
           JSON.stringify(Array.from(new Uint8Array(reader.result)))
         );
-        confirm(
-          `
-          We will generate JSON File of audio duration. 
-
-          it will be named "preloaded.json" 
-          
-          Please download it into the root repo and wait for it to load...
-          `
-        );
-        analyzer(audioPlayback, audioSrc);
+        analyzer(audioPlayback,audioSrc);
         if (!btnStart.hasAttribute("disabled")) {
           btnStart.toggleAttribute("disabled");
           btnStart.classList.add("invisible");
