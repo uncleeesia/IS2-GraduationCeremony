@@ -51,8 +51,9 @@
           Audio Files
         </label>
       </div>
-      <div class="row mt-5 mb-5 p-5">
+      <div class="row mt-3 p-5">
         <audio id="audio"></audio>
+        <audio class="mb-3 invisible" id="audioTemp" controls></audio>
         <audio id="audioPlay" controls></audio>
       </div>
       <div class="d-flex col justify-content-evenly">
@@ -60,8 +61,14 @@
         <button id="btnStop" disabled>Stop Recording</button>
       </div>
       <div class="d-flex col justify-content-evenly">
-        <button class="invisible" id="btnEdit">Edit Audio</button>
+        <button class="invisible" id="btnSelectStudent">Select Student</button>
+        <button class="invisible" id="btnNewAudio">Create new Audio</button>
+        <button class="invisible" id="btnSave">Save Audio</button>
         <button class="invisible" id="btnDelete">Delete Audio</button>
+      </div>
+      <div class="mt-3 row d-flex text-center">
+        <pre>Start the recording to overwrite the existing audio</pre>
+        <pre>saving the audio will replace the current student name</pre>
       </div>
     </section>
     <section class="d-flex row col-md-3 col-sm-3">

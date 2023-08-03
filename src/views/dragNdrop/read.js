@@ -216,7 +216,7 @@ window.addEventListener("load", function () {
             (item) => item.Name.toUpperCase() === localStorageStudent
           );
 
-          var duration = playCurrentName(
+          var duration = getDuration(
             document.getElementById(indexOfStudent[0].id)
           );
 
@@ -274,18 +274,15 @@ function loadData(
         tempData.textContent = e.Name;
         tempData.id = e.id;
         tempData.classList.add("studentName");
-        if (window.location.pathname == "/src/homepage.html") {
-          preloadedData.forEach((preload) => {
-            if (e.id === preload.studentNo) {
-              console.log(preload.studentNo);
-              tempData.setAttribute("startDuration", preload.startTime);
-              tempData.setAttribute(
-                "endDuration",
-                preload.startTime + preload.duration
-              );
-            }
-          });
-        }
+        preloadedData.forEach((preload) => {
+          if (e.id === preload.studentNo) {
+            tempData.setAttribute("startDuration", preload.startTime);
+            tempData.setAttribute(
+              "endDuration",
+              preload.startTime + preload.duration
+            );
+          }
+        });
 
         lastId = e.id;
 
@@ -305,7 +302,8 @@ function loadData(
       if (e.id === lastId) {
         document.getElementById(e.id).addEventListener("click", function (e) {
           localStorage.setItem("TempStudent", e.target.innerText);
-          location.href = "homepage.html";
+          localStorage.setItem("TempDuration", JSON.stringify(getDuration(e.target)));
+          location.reload();
         });
       }
     } else {
@@ -329,7 +327,7 @@ function loadData(
   window.dispatchEvent(event);
 }
 
-function playCurrentName(buttonInfo) {
+function getDuration(buttonInfo) {
   var start = buttonInfo.getAttribute("startDuration");
   var end = buttonInfo.getAttribute("endDuration");
   return { start: start, end: end };
