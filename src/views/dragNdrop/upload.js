@@ -5,24 +5,33 @@ var dragNdrop = document.getElementById("dragNdrop");
 var audioSrc = localStorage.getItem("TempAudioData");
 
 window.addEventListener("DOMContentLoaded", function (e) {
-  e.preventDefault;
+  e.preventDefault();
   if (window.location.pathname == "/src/record.html") {
     btnStart.removeAttribute("disabled");
-    btnEdit.addEventListener("click", function (ev) {
-      analyzer(playAudio);
-    });
   }
   if (audioSrc != null && window.location.pathname == "/src/record.html") {
     const storedArray = JSON.parse(audioSrc);
     const arrayBuffer = new Uint8Array(storedArray).buffer;
     const audioData = new Blob([arrayBuffer], { type: "audio/mp3" });
     playAudio.src = URL.createObjectURL(audioData);
+    if (localStorage.getItem("TempDuration")) {
+      var duration = JSON.parse(localStorage.getItem("TempDuration"));
+      playAudio.currentTime = duration.start;
+      playAudio.addEventListener("timeupdate", () => {
+        if (playAudio.currentTime.toString() > duration.end) {
+          playAudio.pause();
+          playAudio.currentTime = duration.start;
+        }
+      });
+    }
     if (!btnStart.hasAttribute("disabled")) {
       btnStart.toggleAttribute("disabled");
       btnStart.classList.add("invisible");
       btnStop.classList.add("invisible");
       btnDelete.classList.remove("invisible");
-      btnEdit.classList.remove("invisible");
+      btnSelectStudent.classList.remove("invisible");
+      btnSave.classList.remove("invisible");
+      btnNewAudio.classList.remove("invisible");
     }
   }
   function downloadFile(filename, content) {
@@ -60,7 +69,9 @@ window.addEventListener("DOMContentLoaded", function (e) {
           btnStart.classList.add("invisible");
           btnStop.classList.add("invisible");
           btnDelete.classList.remove("invisible");
-          btnEdit.classList.remove("invisible");
+          btnSelectStudent.classList.remove("invisible");
+          btnSave.classList.remove("invisible");
+          btnNewAudio.classList.remove("invisible");
         }
       } else {
         var data = new Uint8Array(e.target.result);
@@ -69,7 +80,9 @@ window.addEventListener("DOMContentLoaded", function (e) {
         confirm(
           `
           We will generate a JSON File. 
+
           it will be named Sheet1.json 
+          
           Please place it in the root repo
           `
         );

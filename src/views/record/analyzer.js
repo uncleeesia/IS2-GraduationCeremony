@@ -43,14 +43,13 @@ export function analyzer(audioType, audioSrc = "") {
       if (startTime !== 0) {
         const endTime = audioElement.currentTime;
         const duration = endTime - startTime;
-        console.log(`Silence detected! Duration: ${duration} seconds`);
-
+        const startDuration = Math.floor(endTime - duration);
         let studentName = document
           .getElementsByClassName("studentName")
           .item(studentNo);
         tempDataToJsonFile.push({
           studentNo: studentName.id,
-          startTime: endTime - duration,
+          startTime: startDuration,
           duration: duration,
         });
 
@@ -62,7 +61,7 @@ export function analyzer(audioType, audioSrc = "") {
         startTime = audioElement.currentTime;
       }
     }
-    requestAnimationFrame(checkForSilence);
+      requestAnimationFrame(checkForSilence);
   }
   const waitForSilence = new Promise((resolve, reject) => {
     const handleSilenceFinished = () => {
@@ -88,7 +87,6 @@ export function analyzer(audioType, audioSrc = "") {
 }
 function saveObjectToJSONFile(obj, filename) {
   const jsonStr = JSON.stringify(obj);
-  console.log(obj);
   const blob = new Blob([jsonStr], { type: "application/json" });
 
   const link = document.createElement("a");
