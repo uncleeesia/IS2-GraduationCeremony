@@ -1,7 +1,7 @@
 export function analyzer(audioType, audioSrc = "") {
-  var studentNo = 0;
+  let totalStudent = localStorage.getItem("totalStudent");
+  let studentNo = 1;
 
-  var tempDataToJsonFile = [];
   const audioContext = new window.AudioContext();
   const audioElement = audioType;
   const source = audioContext.createMediaElementSource(audioElement);
@@ -33,13 +33,15 @@ export function analyzer(audioType, audioSrc = "") {
 
     analyzer.getByteTimeDomainData(dataArray);
 
-    const silenceThreshold = 1;
+    let sum = 0;
+    for (let i = 0; i < bufferLength; i++) {
+      sum += Math.abs(dataArray[i] - 128);
+    }
+    const averageAmplitude = sum / bufferLength;
 
-    const isSilent = dataArray.every(
-      (value) => Math.abs(value - 128) < silenceThreshold
-    );
+    const silenceThreshold = 2;
 
-    if (isSilent) {
+    if (averageAmplitude < silenceThreshold) {
       if (startTime !== 0) {
         const endTime = audioElement.currentTime;
         const duration = endTime - startTime;
@@ -54,6 +56,9 @@ export function analyzer(audioType, audioSrc = "") {
         });
 
         studentNo += 1;
+        if (studentNo > totalStudent) {
+          clearInterval(intervalId);
+        }
       }
       startTime = 0;
     } else {
@@ -63,15 +68,8 @@ export function analyzer(audioType, audioSrc = "") {
     }
       requestAnimationFrame(checkForSilence);
   }
-  const waitForSilence = new Promise((resolve, reject) => {
-    const handleSilenceFinished = () => {
-      audioElement.removeEventListener("ended", handleSilenceFinished);
-      resolve();
-    };
-    audioElement.addEventListener("ended", handleSilenceFinished);
-  });
 
-  checkForSilence();
+  const intervalId = setInterval(checkForSilence, 110);
   audioType = "";
   return waitForSilence.then(() => {
     if (
