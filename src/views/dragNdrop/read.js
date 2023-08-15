@@ -26,6 +26,7 @@ window.addEventListener("load", function () {
   xhr.open("GET", "../Sheet1.json", true);
 
   xhr.onload = function () {
+
     if (xhr.status === 200) {
       var data = JSON.parse(xhr.responseText);
       var tempInput;
@@ -261,70 +262,79 @@ function loadData(
   const tempStudent = ["Name Of Recipient"];
   var lastId = 0;
   sideBarData.innerText = "";
+  fetch("../preloaded.json")
+    .then((response) => response.json())
+    .then((preloadedData) => {
+      console.log(data)
+      data.forEach((e) => {
+        tempData = document.importNode(buttonTemplate, true);
+        if (type) {
+          tempDiploma.push(e.Diploma);
+          diplomaName = [...new Set(tempDiploma)];
+          if (
+            e.Diploma === defaultDiploma ||
+            defaultDiploma === "Show All Diploma"
+          ) {
+            tempData.textContent = e.Name;
+            tempData.id = e.id;
+            tempData.classList.add("studentName");
 
-  data.forEach((e) => {
-    tempData = document.importNode(buttonTemplate, true);
-    if (type) {
-      tempDiploma.push(e.Diploma);
-      diplomaName = [...new Set(tempDiploma)];
-      if (
-        e.Diploma === defaultDiploma ||
-        defaultDiploma === "Show All Diploma"
-      ) {
-        tempData.textContent = e.Name;
-        tempData.id = e.id;
-        tempData.classList.add("studentName");
-        preloadedData.forEach((preload) => {
-          if (e.id === preload.studentNo) {
-            tempData.setAttribute("startDuration", preload.startTime);
-            tempData.setAttribute(
-              "endDuration",
-              preload.startTime + preload.duration
-            );
+            preloadedData.forEach((preload) => {
+              if (e.id === preload.studentNo) {
+                tempData.setAttribute("startDuration", preload.startTime);
+                tempData.setAttribute(
+                  "endDuration",
+                  preload.startTime + preload.duration
+                );
+              }
+            });
+
+            lastId = e.id;
+
+            tempStudent.push(e.Name.toUpperCase());
+            studentName = tempStudent;
+
+            if (search && type) {
+              if (search && !e.Name.toLowerCase().includes(tempInput)) {
+                tempData.style.display = "none";
+              }
+            }
+            sideBarData.appendChild(tempData);
           }
-        });
 
-        lastId = e.id;
-
-        tempStudent.push(e.Name.toUpperCase());
-        studentName = tempStudent;
-
-        if (search && type) {
-          if (search && !e.Name.toLowerCase().includes(tempInput)) {
-            tempData.style.display = "none";
+          total += 1;
+          localStorage.setItem("totalStudent", total);
+          if (e.id === lastId) {
+            document.getElementById(e.id).addEventListener("click", function (e) {
+              localStorage.setItem("TempStudent", e.target.innerText);
+              localStorage.setItem("TempDuration", JSON.stringify(getDuration(e.target)));
+              location.reload();
+            });
           }
+        } else {
+          tempData.textContent = e;
+          tempData.id = e;
+          if (defaultDiploma) {
+            if (search && !e.toLowerCase().includes(tempInput)) {
+              tempData.style.display = "none";
+            }
+          }
+          sideBarData.appendChild(tempData);
+          document.getElementById(e).addEventListener("click", function (e) {
+            loadData(permData.data, false, "", "student", e.target.id);
+            localStorage.setItem("TempStudent", studentName[1]);
+            localStorage.setItem("TempDiploma", e.target.id);
+            location.reload();
+          });
         }
-        sideBarData.appendChild(tempData);
-      }
-
-      total += 1;
-      localStorage.setItem("totalStudent", total);
-      if (e.id === lastId) {
-        document.getElementById(e.id).addEventListener("click", function (e) {
-          localStorage.setItem("TempStudent", e.target.innerText);
-          localStorage.setItem("TempDuration", JSON.stringify(getDuration(e.target)));
-          location.reload();
-        });
-      }
-    } else {
-      tempData.textContent = e;
-      tempData.id = e;
-      if (defaultDiploma) {
-        if (search && !e.toLowerCase().includes(tempInput)) {
-          tempData.style.display = "none";
-        }
-      }
-      sideBarData.appendChild(tempData);
-      document.getElementById(e).addEventListener("click", function (e) {
-        loadData(permData.data, false, "", "student", e.target.id);
-        localStorage.setItem("TempStudent", studentName[1]);
-        localStorage.setItem("TempDiploma", e.target.id);
-        location.reload();
       });
-    }
-  });
-  var event = new Event("loadedData");
-  window.dispatchEvent(event);
+      var event = new Event("loadedData");
+      window.dispatchEvent(event);
+    })
+    .catch((error) => {
+      console.log("Error:", error);
+    });
+
 }
 
 function getDuration(buttonInfo) {
@@ -332,11 +342,4 @@ function getDuration(buttonInfo) {
   var end = buttonInfo.getAttribute("endDuration");
   return { start: start, end: end };
 }
-fetch("../../preloaded.json")
-  .then((response) => response.json())
-  .then((data) => {
-    preloadedData = data;
-  })
-  .catch((error) => {
-    console.log("Error:", error);
-  });
+

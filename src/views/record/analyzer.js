@@ -50,7 +50,7 @@ export function analyzer(audioType, audioSrc = "") {
         tempDataToJsonFile.push({
           studentNo: studentName.id,
           startTime: startDuration,
-          duration: duration,
+          duration: JSON.parse((duration + 0.5).toFixed(2)),
         });
 
         studentNo += 1;
@@ -61,7 +61,7 @@ export function analyzer(audioType, audioSrc = "") {
         startTime = audioElement.currentTime;
       }
     }
-      requestAnimationFrame(checkForSilence);
+    requestAnimationFrame(checkForSilence);
   }
   const waitForSilence = new Promise((resolve, reject) => {
     const handleSilenceFinished = () => {
